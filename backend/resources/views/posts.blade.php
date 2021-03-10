@@ -107,7 +107,7 @@
     @endif
     <!-- ログインユーザーのみ表示 -->
     @if( Auth::check() )
-      @if (count($favo_posts) > 0)
+      {{-- @if (count($favo_posts) > 0) --}}
           <div class="card-body">
               <div class="card-body">
                   <table class="table table-striped task-table">
@@ -138,6 +138,6 @@
                   </table>
               </div>
           </div>
-      @endif
+      {{-- @endif --}}
     @endif
 @endsection
