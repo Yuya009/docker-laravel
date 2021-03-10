@@ -46,3 +46,5 @@ Route::get('postsedit/{post}', 'PostsController@edit');
 //投稿編集アップデート
 Route::post('posts/update', 'PostsController@update');
 
+//投稿詳細ページ
+Route::get('post/{post}', 'PostsController@show');

@@ -11032,3 +11032,12 @@ a.text-dark:focus {
         border-color: #dee2e6;
     }
 }
+
+.link_hidden {
+    text-decoration: none;
+    color: #000;
+}
+.link_hidden:hover {
+    text-decoration: none;
+    color: #000;
+}

@@ -41,21 +41,19 @@ class PostsController extends Controller
     {
         // 全ての投稿を取得
         $posts = Post::get();
-        
+        $favo_posts = array();
         if (Auth::check()) {
              //ログインユーザーのお気に入りを取得
-             $favo_posts = Auth::user()->favo_posts()->get();
+             //$favo_posts = Auth::user()->favo_posts()->get();
              
               return view('top',[
                 'posts'=> $posts,
                 'favo_posts'=>$favo_posts
               ]);
-            
-        }else{
-            
-              return view('top',[
-                'posts'=> $posts
-              ]);
+        // }else{
+        //       return view('top',[
+        //         'posts'=> $posts
+        //       ]);
         }
     }
 
@@ -122,9 +120,10 @@ class PostsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(post $post)
     {
         //
+        return view('content',['post' => $post]);
     }
 
     /**
