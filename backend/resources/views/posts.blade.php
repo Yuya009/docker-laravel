@@ -55,7 +55,7 @@
                 <table class="table table-striped task-table">
                     <!-- テーブルヘッダ -->
                     <thead>
-                        <th>投稿一覧</th>
+                        <th>投稿記事一覧</th>
                         <th>&nbsp;</th>
                     </thead>
                     <!-- テーブル本体 -->
@@ -90,12 +90,21 @@
                                 </td>
                                 <!-- 編集ボタン -->
                                 <td class="table-text">
-                                      <form action="{{ url('postsedit/'.$post->id) }}" method="GET">
+                                      <form action="{{ url('postedit/'.$post->id) }}" method="GET">
                                         <button type="submit" class="btn btn-primary">
                                           編集
                                         </button>
                                       </form>
-                                  <div></div>
+                                </td>
+                                <!-- 削除ボタン -->
+                                <td class="table-text">
+                                      <form action="{{ url('post/'.$post->id) }}" method="POST">
+                                        {{ csrf_field() }}
+                                        {{ method_field('DELETE') }}
+                                        <button type="submit" class="btn btn-danger">
+                                          削除
+                                        </button>
+                                      </form>
                                 </td>
                             </tr>
                           @endif

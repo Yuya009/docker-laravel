@@ -135,7 +135,7 @@ class PostsController extends Controller
     public function edit(Post $post)
     {
         //
-        return view('postsedit', ['post' => $post]);
+        return view('postedit', ['post' => $post]);
     }
 
     public function update(Request $request) {
@@ -178,6 +178,11 @@ class PostsController extends Controller
       //リレーションの登録
       $post->favo_user()->attach($user);
 
+      return redirect('/');
+    }
+    
+    public function delete(Post $post) {
+      $post->delete();
       return redirect('/');
     }
 }
