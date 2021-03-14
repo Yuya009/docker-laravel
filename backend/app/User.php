@@ -42,16 +42,18 @@ class User extends Authenticatable
       return $this->hasMany('App\Post');
     }
 
-    //Postsテーブルとの多対多リレーション
-    public function favo_posts() {
-      return $this->belongsToMany('App\Post');
-    }
-
     //imagesテーブルとの1対多nリレーション(主テーブル)
     public function images() {
       return $this->hasMany('App\Image');
     }
 
-    //
+    //Postsテーブルとの多対多リレーション（favo・お気に入り）
+    public function favo_posts() {
+      return $this->belongsToMany('App\Post');
+    }
 
+    //Postsテーブルとの多対多リレーション（like・いいね）
+    public function like_posts() {
+      return $this->belongsToMany('App\Post','postlike_user');
+    }
 }

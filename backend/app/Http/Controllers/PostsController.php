@@ -17,20 +17,17 @@ class PostsController extends Controller
      */
     public function index()
     {
-        // 全ての投稿を取得
-        $posts = Post::get();
+        $posts = Post::get();// 全ての投稿を取得
         
         if (Auth::check()) {
-             //ログインユーザーのお気に入りを取得
-             $favo_posts = Auth::user()->favo_posts()->get();
-             
+             $favo_posts = Auth::user()->favo_posts()->get();//ログインユーザーのお気に入りを取得
+             $like_posts = Auth::user()->like_posts()->get();//ログインユーザーのいいねを取得
               return view('posts',[
                 'posts'=> $posts,
-                'favo_posts'=>$favo_posts
+                'favo_posts'=>$favo_posts,
+                'like_posts'=>$like_posts
               ]);
-            
         }else{
-            
               return view('posts',[
                 'posts'=> $posts
               ]);
@@ -40,20 +37,21 @@ class PostsController extends Controller
     public function index_top()
     {
         // 全ての投稿を取得
-        $posts = Post::get();
+        $posts = Post::orderBy('created_at', 'desc')->paginate(9);
         $favo_posts = array();
+
         if (Auth::check()) {
              //ログインユーザーのお気に入りを取得
-             //$favo_posts = Auth::user()->favo_posts()->get();
+             $favo_posts = Auth::user()->favo_posts()->get();
              
               return view('top',[
                 'posts'=> $posts,
                 'favo_posts'=>$favo_posts
               ]);
-        // }else{
-        //       return view('top',[
-        //         'posts'=> $posts
-        //       ]);
+         }else{
+               return view('top',[
+                 'posts'=> $posts
+               ]);
         }
     }
 
@@ -102,13 +100,13 @@ class PostsController extends Controller
         }
       
         //以下に登録処理を記述（Eloquentモデル）
-        $posts = new Post;
+        $posts = new Post; //新しいデータをPostモデルを通して、postsテーブルに登録する
         $posts->post_title = $request->post_title; //投稿のタイトル
         $posts->post_desc = $request->post_desc; //投稿の本文
         $posts->file_name = $image_name;
         $posts->file_path = $path;//ファイルの保存パス
         $posts->user_id = Auth::id();//ここでログインしているユーザidを登録しています
-        $posts->save();
+        $posts->save(); //DBに登録
         
         return redirect('/');
      
@@ -120,7 +118,7 @@ class PostsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(post $post)
+    public function show(Post $post)
     {
         //
         return view('content',['post' => $post]);
@@ -167,20 +165,37 @@ class PostsController extends Controller
         //
     }
 
+    //お気に入り処理
     public function favo($post_id)
     {
-      //ログイン中のユーザを取得
-      $user = Auth::user();
-
-      //お気に入りする記事
-      $post = Post::find($post_id);
-
-      //リレーションの登録
-      $post->favo_user()->attach($user);
-
-      return redirect('/');
+      $user = Auth::user();//ログイン中のユーザを取得
+      $post = Post::find($post_id);//お気に入りする記事
+      $post->favo_user()->attach($user);//リレーションの登録
+      return redirect()->back();
     }
-    
+    //お気に入り削除
+    public function favo_delete(Post $post)
+    {
+      $post->favo_user()->detach(Auth::id());
+      return redirect()->back();
+    }
+
+    //いいね処理
+    public function like($post_id)
+    {
+      $user = Auth::user();//ログイン中のユーザを取得
+      $post = Post::find($post_id);//いいねする記事
+      $post->like_user()->attach($user);//リレーションの登録
+      return redirect()->back();
+    }
+    //いいね削除
+    public function like_delete(Post $post)
+    {
+      $post->like_user()->detach(Auth::id());
+      return redirect()->back();
+    }
+
+    //削除処理
     public function delete(Post $post) {
       $post->delete();
       return redirect('/');

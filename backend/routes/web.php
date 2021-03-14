@@ -27,8 +27,6 @@ Route::get('/', 'PostsController@index');
 
 //記事投稿処理
 Route::post('posts', 'PostsController@store');
-//記事お気に入り処理
-Route::post('post/{post_id}', 'PostsController@favo');
 //記事投稿編集ページ
 Route::get('postedit/{post}', 'PostsController@edit');
 //記事投稿編集アップデート
@@ -37,6 +35,15 @@ Route::post('posts/update', 'PostsController@update');
 Route::get('post/{post}', 'PostsController@show');
 //記事投稿削除処理
 Route::delete('post/{post}', 'PostsController@delete');
+
+//記事お気に入り処理
+Route::post('post/{post_id}', 'PostsController@favo');
+//お気に入り削除
+Route::post('favo_cancel/{post}','PostsController@favo_delete');
+//いいね処理
+Route::post('postlike/{post_id}','PostsController@like');
+//いいね削除
+Route::post('like_cancel/{post}','PostsController@like_delete');
 
 //画像アップロードテスト用
 //Route::get('img', )

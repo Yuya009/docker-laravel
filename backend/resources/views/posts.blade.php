@@ -116,7 +116,6 @@
     @endif
     <!-- ログインユーザーのみ表示 -->
     @if( Auth::check() )
-      {{-- @if (count($favo_posts) > 0) --}}
           <div class="card-body">
               <div class="card-body">
                   <table class="table table-striped task-table">
@@ -145,8 +144,34 @@
                           @endforeach
                       </tbody>
                   </table>
+                  
+                  <table class="table table-striped task-table">
+                      <!-- テーブルヘッダ -->
+                      <thead>
+                          <th>いいね一覧</th>
+                          <th>&nbsp;</th>
+                      </thead>
+                      <!-- テーブル本体 -->
+                      <tbody>
+                          @foreach ($like_posts as $like_post)
+                              <tr>
+                                  <!-- 投稿タイトル -->
+                                  <td class="table-text">
+                                      <div>{{ $like_post->post_title }}</div>
+                                  </td>
+                                  <!-- 投稿詳細 -->
+                                  <td class="table-text">
+                                      <div>{{ $like_post->post_desc }}</div>
+                                  </td>
+                                  <!-- 投稿者名の表示 -->
+                                  <td class="table-text">
+                                      <div>{{ $like_post->user->name }}</div>
+                                  </td>
+                              </tr>
+                          @endforeach
+                      </tbody>
+                  </table>
               </div>
           </div>
-      {{-- @endif --}}
     @endif
 @endsection

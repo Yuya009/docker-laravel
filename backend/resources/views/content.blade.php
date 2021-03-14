@@ -6,11 +6,35 @@
 
   <a href="{{ url('/top') }}">トップに戻る</a>
   @if(Auth::check())
-    @if(Auth::id() != $post->user_id && $post->favo_user()->where('user_id',Auth::id())->exists() !== true)
+    @if($post->favo_user()->where('user_id',Auth::id())->exists() !== true)
       <form action="{{ url('post/'.$post->id) }}" method="POST">
         {{ csrf_field() }}
+        <button type="submit" class="btn btn-secondary">
+          お気に入り：{{ $post->favo_user()->count() }}
+        </button>
+      </form>
+    @else
+    <!-- お気に入り削除 -->
+      <form action="{{ url('favo_cancel', $post) }}" method="POST">
+        {{ csrf_field() }}
         <button type="submit" class="btn btn-danger">
-          お気に入り
+          お気に入り：{{ $post->favo_user()->count() }}
+        </button>
+      </form>
+    @endif
+    @if($post->like_user()->where('user_id',Auth::id())->exists() !== true)
+      <form action="{{ url('postlike/'.$post->id) }}" method="POST">
+        {{  csrf_field()  }}
+        <button type="submit" class="btn btn-secondary">
+          いいね：{{ $post->like_user()->count() }}
+        </button>
+      </form>
+    @else
+    <!-- いいね削除 -->
+      <form action="{{ url('like_cancel', $post) }}" method="POST">
+        {{  csrf_field()  }}
+        <button type="submit" class="btn btn-success">
+          いいね：{{ $post->like_user()->count() }}
         </button>
       </form>
     @endif
